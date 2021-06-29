@@ -53,17 +53,7 @@ struct ContentView2: View {
     }
 }
 
-class ImageSaver: NSObject {
-    func writeToPhotoAlbum(image: UIImage) {
-        UIImageWriteToSavedPhotosAlbum(image, self, #selector(saveError), nil)
-    }
-    
-    @objc func saveError(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
-        print("Save finished!")
-    }
-}
-
-struct ContentView: View {
+struct ContentView3: View {
     @State private var image: Image?
     @State private var showingImagePicker = false
     @State private var inputImage: UIImage?
@@ -88,6 +78,59 @@ struct ContentView: View {
         image = Image(uiImage: inputImage)
         let imageSaver = ImageSaver()
         imageSaver.writeToPhotoAlbum(image: inputImage)
+    }
+}
+
+class ImageSaver: NSObject {
+    func writeToPhotoAlbum(image: UIImage) {
+        UIImageWriteToSavedPhotosAlbum(image, self, #selector(saveError), nil)
+    }
+    
+    @objc func saveError(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
+        print("Save finished!")
+    }
+}
+
+struct ContentView: View {
+    @State private var image: Image?
+    @State private var filterIntensity = 0.5
+    
+    var body: some View {
+        NavigationView {
+            VStack {
+                ZStack {
+                    Rectangle()
+                        .fill(Color.secondary)
+                    
+                    if image != nil {
+                        image?
+                            .resizable()
+                            .scaledToFit()
+                    } else {
+                        Text("Tap to select a picture")
+                            .foregroundColor(.white)
+                            .font(.headline)
+                    }
+                }
+                .onTapGesture {
+                    
+                }
+                
+                HStack {
+                    Button("Change Filter") {
+                        
+                    }
+                    
+                    Spacer()
+                    
+                    Button("Save") {
+                        
+                    }
+                }
+            }
+            .padding([.horizontal, .bottom])
+            .navigationBarTitle("Instafilter")
+        }
     }
 }
 
